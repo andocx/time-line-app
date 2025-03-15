@@ -52,31 +52,34 @@ const Home = () => {
           </Divider>
         </Box>
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, padding: 1 }}>
           <Stack 
             direction="row" 
             divider={<Divider orientation="vertical" flexItem />} 
-            spacing={1} 
+            spacing={4} 
             sx={{ justifyContent: "space-evenly", alignItems: "center", }}
             className='mt-6'
           >
             <Item>
-              <p>Calcula la luz hasta que diga YES</p>
+              <p>Encuentra la luz adecuada.</p>
               <Slider
                 size="medium"
                 defaultValue={50}
                 aria-label="slider"
                 valueLabelDisplay="auto"
+                color="info"
                 onChange={handleSliderChange}
               />
-              <p>{sliderValue >= 70 && sliderValue <= 79 ? 'YES' : 'NO'}</p>
+              <p className={`font-[Doto] truncate ${sliderValue >= 70 && sliderValue <= 79 ? 'text-green-500' : 'text-red-500'}`}>
+                {sliderValue >= 70 && sliderValue <= 79 ? 'YES' : 'NO'}
+              </p>
             </Item>
 
             <Item>
-              <p>Presiona el botón</p>
+              <p>Presiona el botón.</p>
               <IconButton disabled={sliderValue < 70 || sliderValue > 79}>
                 <CircleRoundedIcon 
-                  color="action"
+                  color={sliderValue >= 70 && sliderValue <= 79 ? "error" : "action"}
                   fontSize="large"
                   onClick={startReveal}
                 />
@@ -90,7 +93,7 @@ const Home = () => {
                   <span>y</span>
                 </Item>   
             </Divider>
-            <p>Da scroll</p>
+            <p>scroll para navegar a la siguiente.</p>
             </Item>
           </Stack>   
         </Box>

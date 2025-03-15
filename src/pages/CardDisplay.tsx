@@ -30,8 +30,12 @@ const CardDisplay = () => {
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
       event.preventDefault();
-      if (event.deltaY > 0 && activeCard < events.length - 1) {
-        setActiveCard((prev) => prev + 1);
+      if (event.deltaY > 0) {
+        if (activeCard < events.length - 1) {
+          setActiveCard((prev) => prev + 1);
+        } else {
+          navigate("/closure"); // Navigate to Closure page when last card is reached
+        }
       } else if (event.deltaY < 0 && activeCard > 0) {
         setActiveCard((prev) => prev - 1);
       }
@@ -39,7 +43,7 @@ const CardDisplay = () => {
 
     window.addEventListener("wheel", handleScroll);
     return () => window.removeEventListener("wheel", handleScroll);
-  }, [activeCard]);
+  }, [activeCard, navigate]);
 
   const revealContent = useCallback(() => {
     setRevealed((prev) => ({ ...prev, [activeCard]: true }));
@@ -49,7 +53,7 @@ const CardDisplay = () => {
     if (!revealed[activeCard]) {
       const timer = setTimeout(() => {
         revealContent();
-      }, 6000);
+      }, 1000); // Cambiar a 1 segundo
       return () => {
         clearTimeout(timer);
       };
@@ -68,6 +72,8 @@ const CardDisplay = () => {
       >
         <Card {...events[activeCard]} revealed={revealed[activeCard]} />
       </motion.div>
+
+      <p className="mx-10 mb-5">{events[activeCard].description}</p>
 
       <div className="absolute right-4 bottom-40 text-xl inline-block align-middle">
         <span className="[writing-mode:vertical-lr]">scroll down</span>

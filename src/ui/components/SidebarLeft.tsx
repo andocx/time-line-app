@@ -1,11 +1,9 @@
-
+import ProgressTitle from "../../components/ProgressTitle";
 
 const SidebarLeft = () => {
   return (
-    <h2 className="text-7xl  [writing-mode:sideways-lr]">
-      Time-Line
-    </h2>
-  )
-}
+    <ProgressTitle />
+  );
+};
 
 export default SidebarLeft;
