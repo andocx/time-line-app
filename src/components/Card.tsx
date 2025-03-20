@@ -7,7 +7,7 @@ interface CardProps {
   title: string;
   image: string;
   source: string;
-  link: string;
+  link: string | null;
   revealed: boolean;
 }
 
