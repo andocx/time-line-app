@@ -29,8 +29,8 @@ const Card: React.FC<CardProps> = ({ year, title, image, source, link, revealed 
           animate={{ opacity: revealed ? 1 : 0 }}
           transition={{ duration: 6, ease: "easeInOut" }} // Smoother transition
         >
-          {revealed ? (
-            <a href={link} target="_blank" rel="noopener noreferrer">
+          {revealed && link ? (
+            <a href={link || undefined} target="_blank" rel="noopener noreferrer">
               <img src={`/img/${image}.jpg`} alt={title} className="w-full h-full object-cover" />
             </a>
           ) : (
