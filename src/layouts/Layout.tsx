@@ -7,26 +7,32 @@ import Footer from "../ui/components/Footer";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="h-auto flex items-center justify-center border-b border-black text-xl font-bold">
-          <Header />       
+    <div className="flex flex-col min-h-screen border-2 border-black">
+      {/* Header */}
+      <header className="h-auto flex items-center justify-center border-b-2 border-black text-xl font-bold">
+        <Header />
       </header>
 
+      {/* Contenedor central */}
       <div className="flex flex-1">
-        <aside className="w-1/8 border-r border-black flex items-center justify-center">
-          <SidebarLeft /> 
+        {/* Sidebar izquierdo */}
+        <aside className="w-20 border-r-2 border-black flex items-center justify-center">
+          <SidebarLeft />
         </aside>
-        
-        <main className="flex-1 flex items-center justify-center border-black border-x">
+
+        {/* Contenido principal */}
+        <main className="flex-1 flex items-center justify-center">
           <Outlet />
         </main>
 
-        <aside className="w-1/8 border-l border-black flex items-center justify-center">
+        {/* Sidebar derecho */}
+        <aside className="w-20 border-l-2 border-black flex items-center justify-center">
           <SidebarRight />
         </aside>
       </div>
 
-      <footer className="h-auto flex items-center justify-between px-4 border-t border-black text-5xl">
+      {/* Footer */}
+      <footer className="h-auto flex items-center justify-between px-4 border-t-2 border-black text-5xl">
         <Footer />
       </footer>
     </div>

@@ -24,10 +24,13 @@ const ProgressBar = () => {
   };
 
   return (
-    <div className="w-9 h-full">
+    <div className="w-full h-full bg-gray-300"> {/* Set width to full */}
       <motion.div
-        className="w-8" // Increase the width of the progress line
-        style={{ background: getGradient(scrollProgress) }}
+        className="w-full" // Set progress line width to full
+        style={{
+          background: getGradient(scrollProgress),
+          position: "relative", // Ensure proper layering
+        }}
         initial={{ height: 0 }}
         animate={{ height: `${scrollProgress}%` }}
         transition={{ ease: "linear" }}

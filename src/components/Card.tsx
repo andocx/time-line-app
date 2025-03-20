@@ -7,10 +7,11 @@ interface CardProps {
   title: string;
   image: string;
   source: string;
+  link: string;
   revealed: boolean;
 }
 
-const Card: React.FC<CardProps> = ({ year, title, image, source, revealed }) => {
+const Card: React.FC<CardProps> = ({ year, title, image, source, link, revealed }) => {
   const { ref, inView } = useInView({ threshold: 0.6 });
 
   return (
@@ -26,24 +27,31 @@ const Card: React.FC<CardProps> = ({ year, title, image, source, revealed }) => 
           className="w-[79mm] h-[79mm] bg-gray-600 rounded-md overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: revealed ? 1 : 0 }}
-          transition={{ duration: 6, delay: 0.5 }} 
+          transition={{ duration: 6, ease: "easeInOut" }} // Smoother transition
         >
           {revealed ? (
-            <img src={`/img/${image}.jpg`} alt={title} className="w-full h-full object-cover" />
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              <img src={`/img/${image}.jpg`} alt={title} className="w-full h-full object-cover" />
+            </a>
           ) : (
             null
           )}
         </motion.div>
         <motion.div
-          className="w-full flex-grow flex items-end justify-center pb-3"
+          className="w-full flex-grow flex flex-col items-center justify-end pb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: revealed ? 1 : 0 }}
-          transition={{ duration: 6, delay: 0.5 }} 
+          transition={{ duration: 6, ease: "easeInOut" }} // Smoother transition
         >
-          <p className="text-sm text-gray-600 font-handwritten">
-            {revealed ? `${year} ${title}` : null}
-          </p>
-          {inView && revealed && <p className="mt-2 text-gray-600 text-center">{source}</p>}
+          <div className="w-full flex justify-between text-xs text-gray-600 font-handwritten">
+            {revealed ? (
+              <>
+                <span>{year}</span>
+                <span>{source}</span>
+              </>
+            ) : null}
+          </div>
+          {inView && revealed && <p className="mt-2 text-gray-600 text-sm text-center font-bold">{title}</p>}
         </motion.div>
       </div>
     </motion.div>
