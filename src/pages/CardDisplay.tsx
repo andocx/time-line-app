@@ -100,12 +100,14 @@ const CardDisplay = () => {
                   Close
                 </button>
                 <video
-                  src={events[activeCard].link.replace(/^\/public\//, "/videos/")} // Reemplazar el prefijo incorrecto
+                  src={events[activeCard].link ? events[activeCard].link.replace(/^\/public\//, "/videos/") : ""} // Verificar que link no sea null
                   controls
                   autoPlay
                   className="w-full h-full object-contain"
                   onError={() => {
-                    alert(`Error loading video: ${events[activeCard].link.replace(/^\/public\//, "/videos/")}. Please check the file path.`);
+                    if (events[activeCard].link) {
+                      alert(`Error loading video: ${events[activeCard].link.replace(/^\/public\//, "/videos/")}. Please check the file path.`);
+                    }
                     setIsVideoPlaying(false);
                   }}
                 />
