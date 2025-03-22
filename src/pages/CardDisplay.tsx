@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
-import Card from "../components/Card";
 import { events } from "../data/events";
 
 const bgcolors = [
@@ -22,6 +21,7 @@ const CardDisplay = () => {
   const { id } = useParams<{ id: string }>();
   const [activeCard, setActiveCard] = useState(Number(id) || 0);
   const [revealed, setRevealed] = useState<{ [key: number]: boolean }>({});
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     navigate(`/card/${activeCard}`);
@@ -48,6 +48,18 @@ const CardDisplay = () => {
     setRevealed((prev) => ({ ...prev, [activeCard]: true }));
   }, [activeCard]);
 
+  const handleVideoClick = useCallback(() => {
+    if (events[activeCard].link && events[activeCard].link.endsWith(".mp4")) {
+      setIsVideoPlaying(true);
+    } else if (events[activeCard].link) {
+      window.open(events[activeCard].link, "_blank");
+    }
+  }, [activeCard]);
+
+  const handleVideoClose = useCallback(() => {
+    setIsVideoPlaying(false);
+  }, []);
+
   useEffect(() => {
     if (!revealed[activeCard]) {
       const timer = setTimeout(() => {
@@ -59,26 +71,62 @@ const CardDisplay = () => {
     }
   }, [activeCard, revealed, revealContent]);
 
+
   return (
-    <div className={`flex-1 flex flex-col items-center justify-center relative w-full h-full transition-colors duration-500 ${bgcolors[activeCard]}`}>
+    <div
+      className={`flex-1 flex flex-col items-center justify-center relative w-full h-full transition-colors duration-500 ${bgcolors[activeCard]}`}
+    >
       <motion.div
         key={activeCard}
-        initial={{ opacity: 0, x: 100 }} // Comienza fuera del viewport a la derecha
-        animate={{ opacity: 1, x: 0 }} // Se posiciona en el centro
-        exit={{ opacity: 0, x: -100 }} // Sale hacia la izquierda
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -100 }}
         transition={{ duration: 0.5 }}
-        className="flex-1 flex items-center justify-center"
+        className="flex-1 flex items-center justify-center w-full h-full"
       >
-        <Card {...events[activeCard]} revealed={revealed[activeCard]} />
+        <motion.div
+          className="w-full h-full bg-gray-600 overflow-hidden flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: revealed[activeCard] ? 1 : 0 }}
+          transition={{ duration: 6, ease: "easeInOut" }}
+        >
+          {revealed[activeCard] && (
+            isVideoPlaying && events[activeCard].link?.endsWith(".mp4") ? (
+              <div className="relative w-full h-full">
+                <button
+                  onClick={handleVideoClose}
+                  className="absolute top-2 right-2 z-10 bg-black text-white p-2 rounded"
+                >
+                  Close
+                </button>
+                <video
+                  src={events[activeCard].link.replace(/^\/public\//, "/videos/")} // Reemplazar el prefijo incorrecto
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                  onError={() => {
+                    alert(`Error loading video: ${events[activeCard].link.replace(/^\/public\//, "/videos/")}. Please check the file path.`);
+                    setIsVideoPlaying(false);
+                  }}
+                />
+              </div>
+            ) : (
+              <div
+                onClick={events[activeCard].link ? handleVideoClick : undefined} // Solo permitir clic si hay un link válido
+                className={`w-full h-full ${
+                  events[activeCard].link ? "cursor-pointer hover:opacity-80 hover:scale-105 transition-transform duration-300" : "cursor-default"
+                }`}
+              >
+                <img
+                  src={`/img/${events[activeCard].image}.jpg`}
+                  alt={events[activeCard].title}
+                  className="w-full h-full object-cover" // Cambiar a object-contain si es necesario
+                />
+              </div>
+            )
+          )}
+        </motion.div>
       </motion.div>
-
-      <div className="bg-white/30 backdrop-blur-sm rounded-xl shadow-sm">
-        <p className="mx-10 mb-5">{events[activeCard].description}</p>
-      </div>
-
-      <div className="absolute right-4 bottom-40 text-xl inline-block align-middle">
-        <span className="[writing-mode:vertical-lr]">scroll down</span>
-      </div>
     </div>
   );
 };

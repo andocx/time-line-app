@@ -40,7 +40,7 @@ const Home = () => {
       <div className="grid grid-flow-col grid-rows-3 min-h-screen">
         {/*IMAGEN*/}
         <div className='col-span-2 row-span-2 flex items-center justify-center'>
-            <img src="/img/camara.svg" alt="Descripción de la imagen" width="30%" height="30%" />    
+            <img src="/img/camara.svg" alt="Descripción de la imagen" width="50%" height="50%" />    
         </div>
         {/*INSTRUCCIONES*/}
         <div className='col-span-2 row-span-1'>
@@ -61,7 +61,7 @@ const Home = () => {
             className='mt-6'
           >
             <Item>
-              <p>Encuentra la luz adecuada.</p>
+              <p>Encuentra la luz.</p>
               <Slider
                 size="medium"
                 defaultValue={50}
@@ -79,7 +79,7 @@ const Home = () => {
               <p>Presiona el botón.</p>
               <IconButton disabled={sliderValue < 70 || sliderValue > 79}>
                 <CircleRoundedIcon 
-                  color={sliderValue >= 70 && sliderValue <= 79 ? "error" : "action"}
+                  color={sliderValue >= 70 && sliderValue <= 79 ? "success" : "error"}
                   fontSize="large"
                   onClick={startReveal}
                 />
@@ -87,13 +87,11 @@ const Home = () => {
             </Item>
 
             <Item>
-              <p>Espera unos segundos a que se revele</p>
+              <p className="text-start">Espera unos segundos a que se revele.</p>
               <Divider sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <Item elevation={0} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <span>y</span>
-                </Item>   
+                
             </Divider>
-            <p>scroll para navegar a la siguiente.</p>
+            <p className="text-start">Scroll para la siguiente.</p>
             </Item>
           </Stack>   
         </Box>

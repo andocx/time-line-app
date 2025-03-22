@@ -24,7 +24,7 @@ const ProgressBar = () => {
   };
 
   return (
-    <div className="w-full h-full bg-gray-300"> {/* Set width to full */}
+    <div className="w-full h-full"> {/* Set width to full */}
       <motion.div
         className="w-full" // Set progress line width to full
         style={{
